@@ -30,6 +30,7 @@ import com.blackducksoftware.core.properties.configuration.spring.SpringEnvironm
 import com.blackducksoftware.core.properties.configuration.spring.SpringPropertyConfiguration;
 import com.blackducksoftware.core.properties.configuration.spring.SpringPropertyConfigurationFactory;
 import com.blackducksoftware.core.properties.configuration.system.SystemPropertyConfigurationFactory;
+import com.blackducksoftware.core.properties.configuration.writeable.DatabasePropertyConfiguration;
 import com.blackducksoftware.core.properties.configuration.writeable.DatabaseConfigurationFactory;
 import com.blackducksoftware.core.properties.configuration.writeable.DatabasePolledConfigurationSource;
 import com.blackducksoftware.core.properties.configuration.writeable.SingleValueConfigurationSource;
@@ -116,7 +117,7 @@ public class PropertyServer {
       return propertyConfiguration.get();
   }
 
-
+  private DatabasePolledConfigurationSource dbConfigSource;
   protected PropertyConfiguration createDatabasePropertyConfiguration() {
       IPropertyConfigurationFactory propertyConfigurationFactory = new 
             DatabaseConfigurationFactory("DatabaseConfigurationPoller", springEnvironmentManager());
@@ -125,6 +126,11 @@ public class PropertyServer {
       Optional<PropertyConfiguration> propertyConfiguration = propertyConfigurationFactory.create(configurationName);
       if (!propertyConfiguration.isPresent()) {
           throw new BlackDuckServerException("Database property configuration should be present.");
+      }
+      dbConfigSource = ((DatabaseConfigurationFactory) propertyConfigurationFactory).getDbConfigSource();
+      try {dbConfigSource.poll(true, null);}
+      catch (Exception e) {
+        
       }
 
       return propertyConfiguration.get();
@@ -168,9 +174,15 @@ public class PropertyServer {
 
   public String get(String name) {
         final String defaultValue = "This is a default value.";
+        DatabasePropertyConfiguration dbConfig = new DatabasePropertyConfiguration(dbConfigSource);
+        sleep(500);
+        String value = (String) dbConfig.getProperty(name);
+        if (value != null) {
+          return value;
+        }
         Property<String> actualValue = propertyManager.getProperty(name, defaultValue);
 
-        String value = actualValue.getValue();
+        value = actualValue.getValue();
         return value;
   }
 

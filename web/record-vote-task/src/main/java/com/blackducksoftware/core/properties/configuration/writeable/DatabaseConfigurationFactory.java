@@ -22,8 +22,14 @@ public class DatabaseConfigurationFactory implements IPropertyConfigurationFacto
     private final String pollerName;
 
     private final SpringEnvironmentManager springEnvironmentManager;
+    
+    private DatabasePolledConfigurationSource dbConfigSource;
 
-    public DatabaseConfigurationFactory(String pollerName, SpringEnvironmentManager springEnvironmentManager) {
+    public DatabasePolledConfigurationSource getDbConfigSource() {
+		return dbConfigSource;
+	}
+
+	public DatabaseConfigurationFactory(String pollerName, SpringEnvironmentManager springEnvironmentManager) {
         Preconditions.checkArgument(StringUtils.isNotBlank(pollerName), "Poller name must not be blank.");
         Preconditions.checkArgument(springEnvironmentManager != null, "Spring environment manager must be initialized.");
 
@@ -52,8 +58,8 @@ public class DatabaseConfigurationFactory implements IPropertyConfigurationFacto
             // Use default timers.
             pollingScheduler = new PropertyPollingScheduler(pollerName);
         }
-
-        PolledConfigurationSource polledConfigurationSource = new DatabasePolledConfigurationSource();
+        dbConfigSource = new DatabasePolledConfigurationSource();
+        PolledConfigurationSource polledConfigurationSource = dbConfigSource;        
         DynamicConfiguration dynamicConfiguration = new DynamicConfiguration(polledConfigurationSource, pollingScheduler);
         PropertyConfiguration propertyConfiguration = new PropertyConfigurationContainer(dynamicConfiguration, configurationName);
 

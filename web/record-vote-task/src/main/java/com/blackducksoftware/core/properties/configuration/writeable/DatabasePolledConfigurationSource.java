@@ -27,15 +27,22 @@ public class DatabasePolledConfigurationSource implements PolledConfigurationSou
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Jdbc3SimpleDataSource jdbcDataSource;
 
-    /**
+    private Map<String, Object> databasePropertyMap = Maps.newHashMap();
+    
+	/**
      * Default constructor.
      */
     public DatabasePolledConfigurationSource() {
     	jdbcDataSource = new Jdbc3SimpleDataSource();
     	jdbcDataSource.setDatabaseName("postgres");
     	jdbcDataSource.setServerName("db");
-        jdbcDataSource.setUser("postgres");
+    	jdbcDataSource.setUser("postgres");
     }
+    
+    public Map<String, Object> getDatabasePropertyMap() {
+		return databasePropertyMap;
+	}
+
 
     @Override
     public PollResult poll(boolean initial, Object checkPoint) throws Exception { // NOPMD
@@ -45,7 +52,7 @@ public class DatabasePolledConfigurationSource implements PolledConfigurationSou
         // Return a full result of all current, supported system property values.
         logger.info("Attempting to poll for database values.");
 
-        Map<String, Object> databasePropertyMap = Maps.newHashMap();
+        databasePropertyMap = Maps.newHashMap();
 
         Connection connection = jdbcDataSource.getConnection();
         PreparedStatement st = connection.prepareStatement(
