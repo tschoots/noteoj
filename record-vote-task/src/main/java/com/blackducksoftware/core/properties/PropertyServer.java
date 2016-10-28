@@ -146,7 +146,6 @@ public class PropertyServer {
 
   public static void main(String[] args) {
     try {
-      System.out.println("In PropertyServer main: " ); 
       String command = args[0];
       String propertyName = args[1];
       PropertyServer server = new PropertyServer();
@@ -155,7 +154,7 @@ public class PropertyServer {
          server.set(propertyName, valueToSet);
       } else {
          String propVal = server.get(propertyName);
-         System.out.println("Obtained value: " + propVal);
+         System.out.println(propVal);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -169,7 +168,7 @@ public class PropertyServer {
     ps.setString(1, propertyName);
     ps.setString(2, value);
     ps.executeUpdate(); 
-    System.out.println("Set property to: " + value);
+    System.out.println(value);
   }
 
   public String get(String name) {
