@@ -4,5 +4,6 @@ EXPOSE 8080
 
 WORKDIR /code
 ADD ./noteoj_web /code
+ADD ./templates /code
 
 ENTRYPOINT [ "./noteoj_web" ]
