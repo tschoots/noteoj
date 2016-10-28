@@ -2,6 +2,7 @@ package com.blackducksoftware.core.properties;
 
 import javax.validation.MessageInterpolator;
 import java.sql.*;
+import java.util.Map;
 
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.spi.resourceloading.ResourceBundleLocator;
