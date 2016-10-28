@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Noteoj </title>
+</head>
+<body>
+
+<script>
+document.getElementById('properties-input').addEventListener('input', function () {
+	   console.log('changed'); 
+	   alert('yesss');
+	});
+	
+	function doIt (){
+		alert("yes")
+	}
+</script>
+
+<form action="/" method="post">
+  Property name : <input type="text" name="pname" list="properties" value="{{.PName}}" onchange="doIt()">
+  <datalist id="properties">
+      <option id="id1" value="one"> 
+      <option id="id2" value="two">
+      <option id="id3" value="three">      
+  </datalist><br>
+  Property value: <input type="text" name="pvalue"  value="{{.PValue}}"><br>
+  <input type="submit" name="pmethod" value="get"  >
+  <input type="submit" name="pmethod" value="set" >
+
+</form>
+
+</br><br>{{if .Message}}{{.Message}}{{end}}
+
+</body>
+</html>

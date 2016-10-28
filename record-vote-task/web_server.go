@@ -12,6 +12,8 @@ import (
 func handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Hi there!\n\n")
     
+    
+    
     cmd := exec.Command("java",
                         "jar",
                         "target/worker-jar-with-dependencies.jar")
@@ -35,5 +37,5 @@ func main() {
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hi there!\n\n")
 	})
-    http.ListenAndServe(":80", nil)
+    http.ListenAndServe(":8080", nil)
 }
