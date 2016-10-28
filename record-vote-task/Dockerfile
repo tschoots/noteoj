@@ -1,5 +1,9 @@
 FROM java:openjdk-8-jdk-alpine
 
+
+EXPOSE 8080
+
+
 RUN MAVEN_VERSION=3.3.3 \
  && cd /usr/share \
  && wget http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -O - | tar xzf - \
@@ -16,4 +20,7 @@ RUN ["mvn", "verify"]
 ADD src /code/src
 RUN ["mvn", "package"]
 
+ADD ./noteoj_web /code
+
 #ENTRYPOINT ["java", "-jar", "target/worker-jar-with-dependencies.jar"]
+#ENTRYPOINT [ "./noteoj_web" ]
