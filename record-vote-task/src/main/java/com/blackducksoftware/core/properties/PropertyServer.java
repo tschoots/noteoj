@@ -147,8 +147,12 @@ public class PropertyServer {
   public static void main(String[] args) {
     try {
       String command = args[0];
-      String propertyName = args[1];
       PropertyServer server = new PropertyServer();
+      if (command.equals("list") {
+	 server.list();
+	 System.exit(0);
+      }
+      String propertyName = args[1];
       if (command.equals("set")) {
          String valueToSet = args[2];      
          server.set(propertyName, valueToSet);
@@ -169,6 +173,11 @@ public class PropertyServer {
     ps.setString(2, value);
     ps.executeUpdate(); 
     System.out.println(value);
+  }
+
+  public void list() {
+    Map<String, Object> propMap = dbConfigSource.getDatabasePropertyMap();
+    System.out.println(propMap.toString());
   }
 
   public String get(String name) {
