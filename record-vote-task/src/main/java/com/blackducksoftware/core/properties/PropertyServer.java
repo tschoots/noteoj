@@ -169,10 +169,18 @@ public class PropertyServer {
 
   public void set(String propertyName, String value) throws Exception {
     Connection conn = connectToDB("db");
-    PreparedStatement ps = conn.prepareStatement("insert into properties (id, value) VALUES (?, ?)");
-    ps.setString(1, propertyName);
-    ps.setString(2, value);
-    ps.executeUpdate(); 
+
+    try {
+      PreparedStatement ps = conn.prepareStatement("insert into properties (id, value) VALUES (?, ?)");
+      ps.setString(1, propertyName);
+      ps.setString(2, value);
+      ps.executeUpdate(); 
+    } catch (SQLException sqle) {      
+      PreparedStatement ps = conn.prepareStatement("update properties set value=? where id=?");
+      ps.setString(2, propertyName);
+      ps.setString(1, value);
+      ps.executeUpdate(); 
+    }
     System.out.println(value);
   }
 
