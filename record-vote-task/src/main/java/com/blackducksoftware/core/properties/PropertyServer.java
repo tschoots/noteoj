@@ -186,7 +186,19 @@ public class PropertyServer {
 
   public void list() {
     Map<String, Object> propMap = dbConfigSource.getDatabasePropertyMap();
-    System.out.println(propMap.toString());
+    StringBuilder builder = new StringBuilder();
+    builder.append("{\"items\":[");
+    boolean notFirst = false;
+    for (java.util.Map.Entry entry: propMap.entrySet()) {
+	if (notFirst) {
+          builder.append(",");
+        }
+	notFirst = true;
+        builder.append("{\"property\":\"").append(entry.getKey()).append("\",");
+        builder.append("\"value\":\"").append(entry.getValue()).append("\"}");
+    }
+    builder.append("]}");
+    System.out.println(builder.toString());
   }
 
   public String get(String name) {
