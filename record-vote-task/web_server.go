@@ -1,41 +1,106 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "os/exec"
-    //"os"
+	"fmt"
+	"net/http"
+	"os/exec"
+	"html/template"
+	//"io"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
+type PageData struct {
+	PName  string
+	PValue string
+	Message string
+	
+}
 
+type PropertyList struct {
+	Items  [] struct {
+		Property  string `json:"property"`
+		Value     string `json:"value"`
+	} `json:"items"`
+}
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hi there!\n\n")
-    
-    
-    
-    cmd := exec.Command("java",
-                        "jar",
-                        "target/worker-jar-with-dependencies.jar")
-	fmt.Println(cmd.Args)
+
+	fmt.Printf("req method : %s\n", r.Method)
+
+	// get the total propety list
+	
+	if strings.Compare(r.Method, "GET") == 0 {
+		data := &PageData{
+			
+		}
+		templ := template.Must(template.ParseFiles(filepath.Join("templates", "index.html")))
+		templ.Execute(w, data)
+	} else {
+		
+		r.ParseForm()
+		fmt.Printf("pname : %s\n", r.FormValue("pname"))
+		fmt.Printf("pvalue : %s\n", r.FormValue("pvalue"))
+		fmt.Printf("pmethod : %s\n", r.FormValue("pmethod"))
+		
+		//double check if it is a propery change
+		//if strings.Compare(a, b)
+
+                //double check if set was done
+                // set call to java program.
+                //when ok put ok message below or error message below
+cmd := exec.Command("java",
+                         "-jar",
+                    "target/worker-jar-with-dependencies.jar",
+                     r.FormValue("pmethod"),
+                     r.FormValue("pname"),
+                     r.FormValue("pvalue"))
+     fmt.Println(cmd.Args)
+     cmd.Stdout = os.Stdout
+     cmd.Stderr = os.Stderr
+     
+     //cmd.Stdout = w
+     //cmd.Stderr = w
+     
+     //go io.Copy(log., os.Stderr)
+     err := cmd.Run()
+     if err != nil {
+           fmt.Println(err.Error())
+           //return false, err
+     }
+
+		
+		data := &PageData{
+			PName:  r.FormValue("pname"),
+			PValue: r.FormValue("pvalue"),
+			Message: "yes",
+		}
+
+		templ := template.Must(template.ParseFiles(filepath.Join("templates", "index.html")))
+		templ.Execute(w, data)
+	}
+
+	//cmd := exec.Command("java",
+	//                    "-version")
+	//fmt.Println(cmd.Args)
 	//cmd.Stdout = os.Stdout
 	//cmd.Stderr = os.Stderr
-	
-	cmd.Stdout = w
-	cmd.Stderr = w
-	
+
+	//cmd.Stdout = w
+	//cmd.Stderr = w
+
 	//go io.Copy(log., os.Stderr)
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err.Error())
-		//return false, err
-	}
+	//err := cmd.Run()
+	//if err != nil {
+	//	fmt.Println(err.Error())
+	//	//return false, err
+	//}
 }
 
 func main() {
-    http.HandleFunc("/java", handler)
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hi there!\n\n")
-	})
-    http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/", handler)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Printf("error : %s\n", err)
+	}
 }

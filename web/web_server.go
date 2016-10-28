@@ -46,6 +46,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		
 		//double check if it is a propery change
 		//if strings.Compare(a, b)
+
+                //double check if set was done
+                // set call to java program.
+                //when ok put ok message below or error message below
+
 		
 		data := &PageData{
 			PName:  r.FormValue("pname"),

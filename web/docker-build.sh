@@ -4,7 +4,7 @@ _TAG=1.7.1
 
 _IMAGE_NAME=web
 
-echo "remove the local image blackducksoftware/atomic"
+#echo "remove the local image blackducksoftware/atomic"
 docker rmi $_IMAGE_NAME
 
 echo "building go executable"

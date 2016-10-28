@@ -21,6 +21,7 @@ ADD src /code/src
 RUN ["mvn", "package"]
 
 ADD ./noteoj_web /code
+ADD ./templates /code/templates
 
 #ENTRYPOINT ["java", "-jar", "target/worker-jar-with-dependencies.jar"]
-#ENTRYPOINT [ "./noteoj_web" ]
+ENTRYPOINT [ "./noteoj_web" ]
