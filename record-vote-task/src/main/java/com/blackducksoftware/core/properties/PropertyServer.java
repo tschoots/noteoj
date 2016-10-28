@@ -148,7 +148,7 @@ public class PropertyServer {
     try {
       String command = args[0];
       PropertyServer server = new PropertyServer();
-      if (command.equals("list") {
+      if (command.equals("list")) {
 	 server.list();
 	 System.exit(0);
       }
