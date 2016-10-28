@@ -18,7 +18,7 @@ type PageData struct {
 	
 }
 
-type PropertyList {
+type PropertyList struct {
 	Items  [] struct {
 		Property  string `json:"property"`
 		Value     string `json:"value"`
@@ -43,6 +43,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("pname : %s\n", r.FormValue("pname"))
 		fmt.Printf("pvalue : %s\n", r.FormValue("pvalue"))
 		fmt.Printf("pmethod : %s\n", r.FormValue("pmethod"))
+		
+		//double check if it is a propery change
+		//if strings.Compare(a, b)
 		
 		data := &PageData{
 			PName:  r.FormValue("pname"),
