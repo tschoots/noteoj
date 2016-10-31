@@ -50,10 +50,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
                 //double check if set was done
                 // set call to java program.
                 //when ok put ok message below or error message below
-cmd := exec.Command("java",
-                         "-jar",
-                    "target/worker-jar-with-dependencies.jar",
-                     r.FormValue("pmethod"),
+                     cmd := exec.Command("java",
+                                         "-jar",
+                                         "target/worker-jar-with-dependencies.jar",
+                                         r.FormValue("pmethod"),
                      r.FormValue("pname"),
                      r.FormValue("pvalue"))
      fmt.Println(cmd.Args)
