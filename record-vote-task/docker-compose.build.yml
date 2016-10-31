@@ -1,14 +1,6 @@
 version: "2"
 
 services:
-  vote:
-    build: ./vote
-    image: noteoj/serverless-vote
-
-  result:
-    build: ./result
-    image: noteoj/serverless-result
-
-  record-vote-task:
-    build: ./record-vote-task
-    image: noteoj/serverless-record-vote-task
+  config-properties:
+    build: ./config-properties
+    image: noteoj/serverless-config-properties
