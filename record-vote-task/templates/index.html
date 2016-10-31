@@ -32,5 +32,9 @@ document.getElementById('properties-input').addEventListener('input', function (
 
 </br><br>{{if .Message}}{{.Message}}{{end}}
 
+{{ range $index, $propEntity := .PropList.Items }}
+   <br> {{ $index }}.  prop : {{ $propEntity.Property }} , value : {{ $propEntity.Value }} <br>
+{{ end }}
+
 </body>
 </html>
