@@ -17,8 +17,8 @@ RUN ["mvn", "dependency:resolve"]
 RUN ["mvn", "verify"]
 
 # Adding source, compile and package into a fat jar
-ADD src /code/src
-RUN ["mvn", "package"]
+#ADD src /code/src
+#RUN ["mvn", "package"]
 
 ADD ./noteoj_web /code
 ADD ./templates /code/templates
